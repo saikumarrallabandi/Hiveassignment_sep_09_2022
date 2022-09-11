@@ -1,0 +1,6 @@
+Task 3:
+1)what is definition of hive and what is current version of hive?
+ans: Apache hive is an data warehouse which is used for reading, writing, and managing large datasets residing in distributed storage using SQL.Current version of hive is 3.1.1
+
+2)Is Hive suitable to be used for OLTP systems and why?
+ans:
