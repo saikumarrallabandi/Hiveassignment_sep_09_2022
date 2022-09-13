@@ -22,6 +22,13 @@ b)RDBMS
 3.RDMS does sequential computation on structured table stored in single machine
 4.Low latency,since records are indexed accessing and updating records are fast
 
+Reason: Hive 2 by default does not ACID transctions since data owner if not hive and owned by HDFS ,Howerever ORC fileformat supports the ACID properties.
+In Hive 3 ACID transactions are enabled .
+
+4)Explain Hive architecture and different compinents of Hive architecutres?
+ans:
+
+
 
  
 
