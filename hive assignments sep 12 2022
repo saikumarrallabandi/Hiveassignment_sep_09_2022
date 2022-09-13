@@ -3,7 +3,28 @@ Task 3:
 ans: Apache hive is an data warehouse which is used for reading, writing, and managing large datasets residing in distributed storage using SQL.Current version of hive is 3.1.1
 
 2)Is Hive suitable to be used for OLTP systems and why?
+ans: Hive does not provide record-level update, insert, or delete. Henceforth, Hive does not
+provide transactions too. However, users can go with CASE statements and built in functions of Hive to satisfy the above DML operations. Thus, a complex update query in
+a RDBMS may need many lines of code in Hive.
+
+3)How is hive different from RDBMS and does hive support ACID transaction if not give proper reason
 ans:
+a)Hive
+1.Hive deals with Largedatasets in size of giga bytes or petabytes
+2.In Hive we use largedatasets to calculate trends
+3.hive does parallel computation since uderlying framework is HDFS(hadoop) distributed system.
+4.High latency,since records are not indexed cannot accessed quickly
+
+
+b)RDBMS
+1.RDMS deals with Small datasets in size of mega bytes or gigabytes
+2.In RDBMS we use small datasets for accessing and updating individual records
+3.RDMS does sequential computation on structured table stored in single machine
+4.Low latency,since records are indexed accessing and updating records are fast
+
+
+ 
+
 
 Task 1:
 https://github.com/shashank-mishra219/Hive-Class/blob/main/hive_class_3_assignment.txt
