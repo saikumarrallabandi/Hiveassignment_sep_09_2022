@@ -1,0 +1,112 @@
+create table ineuron_test.sales_data_csv (
+ORDERNUMBER int,
+QUANTITYORDERED int,
+PRICEEACH decimal(10,2),
+ORDERLINENUMBER int,
+SALES decimal(10,2),
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCTLINE string,
+MSRP int,
+PRODUCTCODE string,
+PHONE bigint,
+CITY string,
+STATE string,
+POSTALCODE bigint,
+COUNTRY string,
+TERRITORY string,
+CONTACTLASTNAME string,
+CONTACTFIRSTNAME string,
+DEALSIZE string)
+row format delimited                                                                                                                    
+fields terminated by ','
+TBLPROPERTIES ("skip.header.line.count"="1");
+
+ 
+load data inpath '/ineuron/test/' into table ineuron_test.sales_data_csv;
+
+create table ineuron_test.sales_data_orc (
+ORDERNUMBER int,
+QUANTITYORDERED int,
+PRICEEACH decimal(10,2),
+ORDERLINENUMBER int,
+SALES decimal(10,2),
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCTLINE string,
+MSRP int,
+PRODUCTCODE string,
+PHONE bigint,
+CITY string,
+STATE string,
+POSTALCODE bigint,
+COUNTRY string,
+TERRITORY string,
+CONTACTLASTNAME string,
+CONTACTFIRSTNAME string,
+DEALSIZE string)
+stored as orc;
+
+insert into table ineuron_test.sales_data_csv select * from ineuron_test.sales_data_orc;
+
+
+a)Calculatye total sales per year
+ans:
+query:select sum(sales) sales_count,year_id from ineuron_test.sales_data_orc group by year_id;
+
+b)Find a product for which maximum orders were placed
+ans:
+query:select sum(quantityordered) as highestordered,productcode from ineuron_test.sales_data_orc group by productcode order by highestordered desc limit 1 ;
+
+
+c)Calculate the total sales for each quarter
+ans:
+query:select sum(sales) sales_count,quarter_id from ineuron_test.sales_data_orc group by quarter_id;
+
+d)In which quarter sales was minimum
+ans:
+query:select sum(sales) sales,qtr_id from ineuron_test.sales_data_orc group by qtr_id order by sales  limit 1;
+
+
+e)In which country sales was maximum and in which country sales was minimum
+ans:
+ query:with max as(
+   select sum(sales) as sales,country from ineuron_test.sales_data_orc group by country order by sales desc limit 1
+    ),
+min as (
+select sum(sales) as sales,country from ineuron_test.sales_data_orc group by country order by sales limit 1
+)
+ 
+ select country,sales from min
+union all
+select country,sales from max;
+
+
+
+f)Calculate quartelry sales for each city
+ans:
+query:select sum(sales) as sales,qtr_id,city from ineuron_test.sales_data_orc group by qtr_id,city order by city;
+
+
+g) Find a month for each year in which maximum number of quantities were sold 
+ans:
+with src as(
+select sum(quantityordered) as quantity,month_id,year_id from ineuron_test.sales_data_orc group by month_id,year_id order by year_id,month_id
+),
+rank_data as(
+select quantity,month_id,year_id,rank() over (partition by year_id order by quantity desc) as rnk from src group by year_id,month_id,quantity
+)
+select quantity,month_id,year_id from rank_data where rnk='1';
+
+
+
+
+
+
+
+
+
