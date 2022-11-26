@@ -253,3 +253,76 @@ ans:create view ineuron_test.air_quality_vw as select * from ineuron_test.air_qu
 hive operation with python
 
 Create a python application that connects to the Hive database for extracting data, creating sub tables for data processing, drops temporary tables.fetch rows to python itself into a list of tuples and mimic the join or filter operations
+
+---Data extract 
+from pyhive import hive
+host_name = "192.168.56.101"
+port = 22
+user = "cloudera"
+password = "cloudera"
+database="ineuron_test"
+
+try:  
+    conn = hive.Connection(host=host_name, port=port, username=user, password=password,
+                           database=database, auth='CUSTOM')
+    cur = conn.cursor()
+    cur.execute('select a.* from sales_orders_csv a limit 5')
+    result = cur.fetchall()
+    print(result)
+except Exception as e:
+    logging.error(str(e))
+	
+--Drop table 
+
+from pyhive import hive
+host_name = "192.168.56.101"
+port = 22
+user = "cloudera"
+password = "cloudera"
+database="ineuron_test"
+
+try:  
+    conn = hive.Connection(host=host_name, port=port, username=user, password=password,
+                           database=database, auth='CUSTOM')
+    cur = conn.cursor()
+    cur.execute('drop table sales_orders_csv')
+except Exception as e:
+    logging.error(str(e))
+	
+--inner join
+
+from pyhive import hive
+host_name = "192.168.56.101"
+port = 22
+user = "cloudera"
+password = "cloudera"
+database="ineuron_test"
+
+try:  
+    conn = hive.Connection(host=host_name, port=port, username=user, password=password,
+                           database=database, auth='CUSTOM')
+    cur = conn.cursor()
+    cur.execute('select a.* from  sales_orders_csv a inner join order b on a.order_number=b.oid')
+    result = cur.fetchall()
+    print(result)
+except Exception as e:
+    logging.error(str(e))
+	
+--filter operation
+
+from pyhive import hive
+host_name = "192.168.56.101"
+port = 22
+user = "cloudera"
+password = "cloudera"
+database="ineuron_test"
+
+try:  
+    conn = hive.Connection(host=host_name, port=port, username=user, password=password,
+                           database=database, auth='CUSTOM')
+    cur = conn.cursor()
+    cur.execute('select a.* from  sales_orders_csv a where year_id=2003')
+    result = cur.fetchall()
+    print(result)
+except Exception as e:
+    logging.error(str(e))
